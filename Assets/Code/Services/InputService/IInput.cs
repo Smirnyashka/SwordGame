@@ -2,6 +2,6 @@
 {
     public interface IInput
     {
-        bool StartChangeDirection { get; }
+        
     }
 }
