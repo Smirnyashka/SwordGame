@@ -9,20 +9,27 @@ namespace Code.Root
 {
     public class SceneInstaller : MonoInstaller
     {
-        private IControllable _controllable;
+        [SerializeField]private PlayerMovement heroPlayerMovement;
         
         public override void InstallBindings()
         {
             BindConfigs();
             BindServices();
             BindUnits();
+            BindAnimation();
+        }
+
+        private void BindAnimation()
+        {
+            Container.Bind<Animator>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<AnimationController>().AsSingle();
         }
 
         private void BindUnits()
         {
-            Container.Bind<CharacterController>().FromComponentInHierarchy().AsSingle();
             Container.Bind<HeroConfig>().AsSingle();
-            Container.Bind<IControllable>().To<Movement>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerMovement>().FromInstance(heroPlayerMovement).AsSingle();
+            Container.Bind<IAttackble>().To(typeof(PlayerAttack)).AsSingle();
         }
 
         private void BindConfigs()
